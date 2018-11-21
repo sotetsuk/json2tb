@@ -90,6 +90,8 @@ class TBWriter(object):
         return tag
 
     def _write_scalar(self, tag, val, global_step=None):
+        if not (isinstance(val, int) or isinstance(val, float)):
+            val = float(val)
         self.writer.add_scalar(tag, val, global_step=global_step)
 
     def _write_hist(self, tag, val, global_step=None):
@@ -105,7 +107,14 @@ class TBWriter(object):
         return isinstance(val, list)
 
     def _is_scalar(self, val):
-        return isinstance(val, int) or isinstance(val, float)
+        if isinstance(val, int) or isinstance(val, float):
+            return True
+        else:
+            try:
+                val = float(val)
+                return True
+            except ValueError:
+                return False
 
     def _is_dict(self, val):
         return isinstance(val, dict)
