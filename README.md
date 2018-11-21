@@ -1,5 +1,5 @@
 # json2tb
-A tiny utility for loading json file into tensor board
+A tiny utility for loading json file and translating into tensorboard format.
 
 ## Usage
 
