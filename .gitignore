@@ -5,3 +5,4 @@
 tmp/*
 dist/*
 json2tb.egg-info/*
+build/*
