@@ -2,6 +2,7 @@ import sys
 import argparse
 import codecs
 import json
+import numpy as np
 import tensorboardX
 
 
@@ -92,7 +93,6 @@ class TBWriter(object):
         self.writer.add_scalar(tag, val, global_step=global_step)
 
     def _write_hist(self, tag, val, global_step=None):
-        import numpy as np
         self.writer.add_histogram(tag, np.array(val), global_step=global_step)
 
     def _is_writable(self, key, val):
