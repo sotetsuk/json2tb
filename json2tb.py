@@ -4,6 +4,7 @@ import codecs
 import json
 import tensorboardX
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--logdir', nargs=None, type=str, default=None)
 parser.add_argument('--input-json', nargs='?', type=str, default=None)
@@ -48,19 +49,66 @@ class TBWriter(object):
         self.logdir = logdir
         self.global_step_name = global_step_name
         self.writer = tensorboardX.SummaryWriter(self.logdir)
+        self.counter = 0
 
     def write(self, d):
         if d is None:
             return
 
-        global_step = None
+        self.counter += 1
+        global_step = self.counter
         if self.global_step_name is not None:
             global_step = d[self.global_step_name]
+
+        self._write_dict(d, tag=None, global_step=global_step)
+
+    def _write_dict(self, d, tag=None, global_step=None):
         for key, val in d.items():
-            if self.global_step_name is not None and key == self.global_step_name:
+            if key == self.global_step_name:
                 continue
 
-            self.writer.add_scalar(key, val, global_step=global_step)
+            if self._is_writable(key, val):
+                self._write_item(self._concat_tag(tag, key), val, global_step=global_step)
+                continue
+
+            if self._is_dict(val):
+                self._write_dict(val, tag=self._concat_tag(tag, key), global_step=global_step)
+
+    def _write_item(self, tag, val, global_step=None):
+        if self._is_scalar(val):
+            self._write_scalar(tag, val, global_step=global_step)
+
+        if self._is_list(val):
+            self._write_hist(tag, val, global_step=global_step)
+
+    def _concat_tag(self, tag, key):
+        if tag is not None:
+            tag = "{}/{}".format(tag, key)
+        else:
+            tag = key
+        return tag
+
+    def _write_scalar(self, tag, val, global_step=None):
+        self.writer.add_scalar(tag, val, global_step=global_step)
+
+    def _write_hist(self, tag, val, global_step=None):
+        import numpy as np
+        self.writer.add_histogram(tag, np.array(val), global_step=global_step)
+
+    def _is_writable(self, key, val):
+        if isinstance(key, str) and (self._is_scalar(val) or self._is_list(val)):
+            return True
+
+        return False
+
+    def _is_list(self, val):
+        return isinstance(val, list)
+
+    def _is_scalar(self, val):
+        return isinstance(val, int) or isinstance(val, float)
+
+    def _is_dict(self, val):
+        return isinstance(val, dict)
 
 
 def line2dict(line, ignore_broken_line=False):
