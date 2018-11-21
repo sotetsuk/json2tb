@@ -33,7 +33,7 @@ class FileIterator(object):
         try:
             while True:
                 line = self.fp.readline()
-                # TODO: check whther this is appropriate for empty line
+                # TODO: check whether this is appropriate for empty line
                 if line:
                     yield line
         except KeyboardInterrupt:
