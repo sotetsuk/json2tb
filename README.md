@@ -24,3 +24,10 @@ $ cat train_log.json
 {"num_updates": 2000, "train_loss": 6.5, "valid_loss": 6.8}
 {"num_updates": 3000, "train_loss": 5.8, "valid_loss": 6.2}
 ```
+
+## Usage example 
+
+```sh
+$ python json2tb.py --logdir tmp --input-json resources/simple.json
+$ python json2tb.py --logdir tmp --input-json resources/nested.json --global-step num_updates
+```
