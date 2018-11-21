@@ -50,6 +50,9 @@ class TBWriter(object):
         self.writer = tensorboardX.SummaryWriter(self.logdir)
 
     def write(self, d):
+        if d is None:
+            return
+
         global_step = None
         if self.global_step_name is not None:
             global_step = d[self.global_step_name]
@@ -60,12 +63,16 @@ class TBWriter(object):
             self.writer.add_scalar(key, val, global_step=global_step)
 
 
-def line2dict(line):
+def line2dict(line, ignore_broken_line=False):
     line = line.strip('\n').strip()
     try:
         d = json.loads(line)
     except json.decoder.JSONDecodeError as e:
-        raise e
+        if ignore_broken_line:
+            print("Broken line is found and ignored.")  # TODO: use logger
+            return None
+        else:
+            raise e
 
     return d
 
@@ -79,7 +86,7 @@ def main(args):
         itr = FileIterator(args.input_json)
 
     for line in itr:
-        d = line2dict(line)
+        d = line2dict(line, args.ignore_broken_line)
         tbwriter.write(d)
 
 
