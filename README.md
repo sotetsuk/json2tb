@@ -3,15 +3,21 @@
 # json2tb
 A tiny utility for loading a json and translating into tensorboard format.
 
+## Install
+
+```sh
+$ pip install json2tb
+```
+
 ## Usage
 
 ```sh
 # generate json log
 $ python train.py --log-output train_log.json & 
 # read json from standard input
-$ tail -fn +1 train_log.json | python json2tb.py --logdir logdir --global-step "num_updates"
+$ tail -fn +1 train_log.json | json2tb --logdir logdir --global-step "num_updates"
 # or please use --input-json argument
-$ python json2tb.py --logdir logdir --input-json train_log.json --global-step "num_updates"
+$ json2tb --logdir logdir --input-json train_log.json --global-step "num_updates"
 ```
 
 ## Json format example
@@ -30,6 +36,6 @@ $ cat train_log.json
 ## Usage example 
 
 ```sh
-$ python json2tb.py --logdir tmp --input-json resources/simple.json
-$ python json2tb.py --logdir tmp --input-json resources/nested.json --global-step num_updates
+$ json2tb --logdir tmp --input-json resources/simple.json
+$ json2tb --logdir tmp --input-json resources/nested.json --global-step num_updates
 ```
