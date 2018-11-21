@@ -14,7 +14,7 @@ setup(
                       "tensorboardx"],
     packages=find_packages(),
     entry_points={
-        'console_scripts': 'json2tb = json2tb:main'
+        'console_scripts': 'json2tb = json2tb.main:main'
     },
     classifiers=[
         "License :: OSI Approved :: MIT License"
