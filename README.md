@@ -5,7 +5,10 @@ A tiny utility for loading json file into tensor board
 
 ```sh
 $ python train.py --log-output train_log.json & 
-$ tail -fn +1 train_log.json | python json2tb.py --logdir logidr --global-step "num_updates"
+$ # read json from standard input
+$ tail -fn +1 train_log.json | python json2tb.py --logdir logdir --global-step "num_updates"
+$ # or please use --input-json argument
+$ python json2tb.py --logdir logdir --input-json train_log.json --global-step "num_updates"
 ```
 
 ## Json format example
