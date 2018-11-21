@@ -125,7 +125,7 @@ def line2dict(line, ignore_broken_line=False):
     return d
 
 
-def main(args):
+def main():
     tbwriter = TBWriter(args.logdir, args.global_step)
 
     if args.input_json is None:
@@ -139,5 +139,5 @@ def main(args):
 
 
 if __name__ == '__main__':
-    main(args)
+    main()
 
