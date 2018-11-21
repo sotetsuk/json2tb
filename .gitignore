@@ -3,3 +3,5 @@
 .vscode/*
 *.iml
 tmp/*
+dist/*
+json2tb.egg-info/*
