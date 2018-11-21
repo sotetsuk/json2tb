@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/json2tb.svg)](https://badge.fury.io/py/json2tb)
+
 # json2tb
 A tiny utility for loading a json and translating into tensorboard format.
 
