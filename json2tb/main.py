@@ -113,7 +113,7 @@ class TBWriter(object):
             try:
                 val = float(val)
                 return True
-            except ValueError:
+            except Exception:
                 return False
 
     def _is_dict(self, val):
